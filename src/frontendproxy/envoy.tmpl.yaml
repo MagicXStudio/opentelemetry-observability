@@ -33,8 +33,6 @@ static_resources:
                       domains:
                         - "*"
                       routes:
-                        - match: { prefix: "/feature" }
-                          route: { cluster: featureflag, prefix_rewrite: "/" }
                         - match: { prefix: "/loadgen" }
                           route: { cluster: loadgen, prefix_rewrite: "/" }
                         - match: { prefix: "/otlp-http/" }
@@ -43,8 +41,6 @@ static_resources:
                           route: { cluster: jaeger }
                         - match: { prefix: "/grafana" }
                           route: { cluster: grafana }
-                        - match: { prefix: "/" }
-                          route: { cluster: frontend }
                 http_filters:
                   - name: envoy.filters.http.router
                     typed_config:

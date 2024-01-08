@@ -27,7 +27,7 @@ services:
           memory: 160M
     restart: unless-stopped
     ports:
-      - "${CART_SERVICE_PORT}"
+      - "${CART_SERVICE_PORT}:${CART_SERVICE_PORT}"
     environment:
       - CART_SERVICE_PORT
       - REDIS_ADDR

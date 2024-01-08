@@ -29,7 +29,7 @@ builder.Logging
     .AddOpenTelemetry(options => options.AddOtlpExporter())
     .AddConsole();
 
-builder.Services.AddSingleton<ICartStore>(x=>
+builder.Services.AddSingleton<ICartStore>(x =>
 {
     var store = new RedisCartStore(x.GetRequiredService<ILogger<RedisCartStore>>(), redisAddress);
     store.Initialize();
@@ -69,11 +69,12 @@ builder.Services.AddGrpcHealthChecks()
 
 var app = builder.Build();
 
-var redisCartStore = (RedisCartStore) app.Services.GetRequiredService<ICartStore>();
+var redisCartStore = (RedisCartStore)app.Services.GetRequiredService<ICartStore>();
 app.Services.GetRequiredService<StackExchangeRedisInstrumentation>().AddConnection(redisCartStore.GetConnection());
 
 app.MapGrpcService<CartService>();
 app.MapGrpcHealthChecksService();
+app.MapGet("/Ping", () => $"Hello! {DateTime.Now} {Environment.NewLine}{new string('A', 1024)}");
 
 app.MapGet("/", async context =>
 {
