@@ -113,7 +113,7 @@ services:
         limits:
           memory: 50M
     ports:
-      - "${ENVOY_PORT}:${ENVOY_PORT}"
+      - "${GATEWAY_PORT}:${GATEWAY_PORT}"
       - 10000:10000
     environment:
       - FRONTEND_PORT
@@ -129,7 +129,7 @@ services:
       - OTEL_COLLECTOR_HOST
       - OTEL_COLLECTOR_PORT_GRPC
       - OTEL_COLLECTOR_PORT_HTTP
-      - ENVOY_PORT
+      - GATEWAY_PORT
     depends_on:
       frontend:
         condition: service_started
@@ -251,7 +251,7 @@ services:
       - jaeger
     logging: *logging
     environment:
-      - ENVOY_PORT
+      - GATEWAY_PORT
 
   # Prometheus
   prometheus:

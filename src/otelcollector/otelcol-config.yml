@@ -11,9 +11,9 @@ receivers:
           allowed_origins:
             - "http://*"
             - "https://*"
-  httpcheck/frontendproxy:
+  httpcheck/gateway:
     targets:
-      - endpoint: http://frontendproxy:${env:ENVOY_PORT}
+      - endpoint: http://nginx-gateway:${env:GATEWAY_PORT}
 
 exporters:
   debug:
@@ -58,7 +58,7 @@ service:
       processors: [batch]
       exporters: [otlp, debug, spanmetrics]
     metrics:
-      receivers: [httpcheck/frontendproxy, otlp, spanmetrics]
+      receivers: [httpcheck/gateway, otlp, spanmetrics]
       processors: [filter/ottl, transform, batch]
       exporters: [otlphttp/prometheus, debug]
     logs:

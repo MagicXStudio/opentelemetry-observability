@@ -9674,7 +9674,7 @@ spec:
             value: 'opentelemetry-demo-otelcol'
           - name: OTEL_EXPORTER_OTLP_METRICS_TEMPORALITY_PREFERENCE
             value: cumulative
-          - name: ENVOY_PORT
+          - name: GATEWAY_PORT
             value: "8080"
           - name: FRONTEND_PORT
             value: "8080"
