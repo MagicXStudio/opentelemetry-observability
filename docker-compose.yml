@@ -12,7 +12,33 @@ networks:
     driver: bridge
 
 services:
-  # Cart service
+  # nginx 
+  nginx:
+    image: ${IMAGE_NAME}:${IMAGE_VERSION}-nginx
+    container_name: nginx
+    deploy:
+      resources:
+        limits:
+          memory: 500M
+    restart: unless-stopped
+    environment:
+      - OTEL_EXPORTER_OTLP_ENDPOINT
+      - OTEL_EXPORTER_OTLP_METRICS_TEMPORALITY_PREFERENCE
+      - OTEL_RESOURCE_ATTRIBUTES
+      - OTEL_SERVICE_NAME=nginx
+    volumes:
+      - ./src/nginx/conf/nginx.conf:/etc/nginx/conf/nginx.conf
+      - ./src/nginx/logs/:/etc/nginx/logs/
+      - ./src/nginx/html/:/etc/nginx/html/
+    healthcheck:
+      test: nc -z nginx 80
+      start_period: 10s
+      interval: 5s
+      timeout: 10s
+      retries: 10
+    logging: *logging
+
+
   cartservice:
     image: ${IMAGE_NAME}:${IMAGE_VERSION}-cartservice
     container_name: cart-service
