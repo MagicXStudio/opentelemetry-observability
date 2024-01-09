@@ -106,7 +106,7 @@ services:
         condition: service_started
 
   # Load Generator
-  loadgenerator:
+  load-generator:
     image: ${IMAGE_NAME}:${IMAGE_VERSION}-loadgenerator
     container_name: load-generator
     build:
@@ -137,6 +137,11 @@ services:
         condition: service_started
     logging: *logging
 
+  zipkin:
+    image: openzipkin/zipkin
+    container_name: zipkin
+    ports:
+      - 9411:9411
 
   kafka:
     image: ${IMAGE_NAME}:${IMAGE_VERSION}-kafka
@@ -235,8 +240,10 @@ services:
       - ./src/otelcollector/otelcol-config.yml:/etc/otelcol-config.yml
       - ./src/otelcollector/otelcol-config-extras.yml:/etc/otelcol-config-extras.yml
     ports:
-      - "4317"          # OTLP over gRPC receiver
-      - "4318"          # OTLP over HTTP receiver
+      - "4317:4317"          # OTLP over gRPC receiver
+      - "4318:4318"          # OTLP over HTTP receiver
+      - "8888:8888"          # 
+      - "9464:9464"          #
     depends_on:
       - jaeger
     logging: *logging
